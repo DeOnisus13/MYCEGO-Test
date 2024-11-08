@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="{% url 'loader:items' %}" method="post">
+    {% csrf_token %}
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <label for="InputPublicKey" class="form-label">Введите public_key от ресурса на Я.Диске</label>
+                <input type="url" name="public_url" class="form-control" id="InputPublicKey"
+                       placeholder="Ссылка на публичный Я.Диск" required>
+                <button type="submit" class="btn btn-primary mt-3">Запросить</button>
+            </div>
+        </div>
+    </section>
+</form>
+{% endblock %}

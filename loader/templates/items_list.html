@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Файлы из Я.Диска</h1>
+            <p class="lead text-body-secondary">Файлы, которые можно скачать</p>
+            <p>
+            <form action="{% url 'loader:items' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="public_url" value="{{ request.session.public_url }}">
+                {% if download_url %}
+                <a class="btn btn-primary" href="{{ download_url }}" role="button" download>Скачать все</a>
+                {% else %}
+                <button type="button" class="btn btn-secondary" disabled>Скачать все</button>
+                {% endif %}
+            </form>
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="album py-5 bg-body-tertiary">
+    <div class="container-sm">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
+            {% for item in items %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <img src="{{ item.preview }}" alt="No Preview" height="200" width="200">
+                    <div class="card-body">
+                        <p class="card-text">Name: {{ item.name_file }}</p>
+                        <p class="card-text">Type: {{ item.type }}</p>
+                        <p class="card-text">Type: {{ item.media_type }}</p>
+                        <p class="card-text">Extension: {{ item.mime_type }}</p>
+                        <p class="card-text">Created at: {{ item.created }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                {% if item.file_dl_link %}
+                                <a class="btn btn-primary" href="{{ item.file_dl_link }}" role="button">Скачать</a>
+                                {% else %}
+                                <button type="button" class="btn btn-secondary" disabled>Скачать</button>
+                                {% endif %}
+                            </div>
+                            <small class="text-body-secondary">{{ item.size }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
